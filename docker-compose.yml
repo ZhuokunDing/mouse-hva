@@ -1,0 +1,21 @@
+name: mouse-hva
+version: "3.4"
+x-shared: &common
+  ipc: host
+  volumes:
+    - ${SRC_PATH}:/src
+    - /mnt:/mnt
+    - ${NOTEBOOK_PATH}:/notebooks
+    - /mnt/dj-stor01:/external
+  env_file:
+    - .env
+
+services:
+  static:
+    <<: *common
+    image: at-docker:5000/static-networks:v0.0.11-py38-torch1.7.0-cuda11-dj-atlab0.12
+    container_name: mouse-hva-static
+    ports:
+      - "0.0.0.0:8991:8888"
+    entrypoint: /src/microns-funconnect/deploy/docker/entrypoint-static.sh
+
